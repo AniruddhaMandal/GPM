@@ -158,6 +158,8 @@ def run(params):
 
                 is_stop = stopper(result)
                 logger.log(idx, epoch, loss, result)
+                print("Run {:d} | Epoch {:04d} | Loss {:.4f} | Train {:.4f} | Val {:.4f} | Test {:.4f}".format(
+                    idx, epoch, loss['train'], result['train'], result['val'], result['test']))
                 if is_stop:
                     print("Early Stopping at Epoch:", epoch)
                     break
@@ -184,6 +186,8 @@ def run(params):
                 print('Model saved at epoch', epoch)
 
         single_best = logger.get_single_best(idx)
+        print("\n--- Run {:d} Best | Train {:.4f} | Val {:.4f} | Test {:.4f} ---\n".format(
+            idx, single_best['train'], single_best['val'], single_best['test']))
         wandb.log({
             "best values/train": single_best["train"],
             "best values/val": single_best["val"],
