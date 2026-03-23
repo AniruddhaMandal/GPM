@@ -196,6 +196,11 @@ def run(params):
         gc.collect()
 
     best = logger.get_best()
+    print("\n=== Final Results ===")
+    print("Train: {:.4f} ± {:.4f}".format(best['train']['mean'], best['train']['std']))
+    print("Val:   {:.4f} ± {:.4f}".format(best['val']['mean'], best['val']['std']))
+    print("Test:  {:.4f} ± {:.4f}".format(best['test']['mean'], best['test']['std']))
+    print("====================\n")
     wandb.log({
         "final result/train": "{:.2f} ± {:.2f}".format(best['train']['mean'], best['train']['std']),
         "final result/val": "{:.2f} ± {:.2f}".format(best['val']['mean'], best['val']['std']),
