@@ -15,7 +15,10 @@ from torch_geometric.datasets import Planetoid, CoraFull, Amazon, Coauthor, Wiki
     WikipediaNetwork, HeterophilousGraphDataset, Actor, LRGBDataset, GNNBenchmarkDataset, TUDataset, DeezerEurope, \
     Twitch
 from .dataset.attributed_graph_dataset import AttributedGraphDataset
-from .dataset.heterophily_graph_dataset import load_pokec_mat
+try:
+    from .dataset.heterophily_graph_dataset import load_pokec_mat
+except Exception:
+    load_pokec_mat = None
 from .dataset.transfer_learning_citation_dataset import CitationNetworkDataset
 from .dataset.zinc_dataset import ZINC
 

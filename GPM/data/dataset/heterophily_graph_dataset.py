@@ -13,7 +13,10 @@ from torch_geometric.datasets import Planetoid, Amazon, Coauthor
 from torch_geometric.transforms import NormalizeFeatures
 from os import path
 
-from torch_sparse import SparseTensor
+try:
+    from torch_sparse import SparseTensor
+except Exception:
+    SparseTensor = None
 from google_drive_downloader import GoogleDriveDownloader as gdd
 
 import networkx as nx

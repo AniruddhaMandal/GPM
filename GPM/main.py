@@ -1,10 +1,13 @@
 import time
 
+import torch
+torch.backends.cuda.enable_flash_sdp(False)
+torch.backends.cuda.enable_mem_efficient_sdp(False)
+
 import yaml
 import os.path as osp
 import gc
 import numpy as np
-import torch
 import torch_scatter
 import torch.nn as nn
 import torch.nn.functional as F
@@ -222,7 +225,7 @@ def run(params):
 
 
 def main():
-    set_memory_limit()  # 90% by default
+    # set_memory_limit()  # disabled: too tight on low-memory systems (causes libgomp thread failures)
     params = get_args()
 
     params['data_path'] = osp.join(osp.dirname(__file__), '..', 'data')
