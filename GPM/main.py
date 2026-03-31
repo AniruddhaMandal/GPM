@@ -269,6 +269,8 @@ def main():
     )
     params = dict(wandb.config)
     print(params)
+    if 'y_unnorm_scale' in params:
+        print(f"[Unnorm] y_min={params.get('y_min', '?'):.4f}  y_max={params.get('y_max', '?'):.4f}  scale={params['y_unnorm_scale']:.4f}  (Val/Test MAE printed on raw scale)")
 
     run(params)
 
