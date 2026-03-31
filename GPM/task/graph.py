@@ -195,6 +195,7 @@ def eval_graph(graph, model, split=None, params=None):
             pred = torch.cat(pred_list, dim=0)
 
             value = evaluate(pred, y, params=params)
-            results[key] = value
+            scale = params.get('y_unnorm_scale', 1.0)
+            results[key] = value * scale
 
     return results

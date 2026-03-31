@@ -1,4 +1,5 @@
 import os.path as osp
+import pickle as _pkl
 from collections import Counter
 
 import numpy as np
@@ -629,6 +630,25 @@ def load_graph_task(params):
 
         full_set._data.x_feat = x_feat
         full_set._data.e_feat = e_feat
+
+        # Compute unnormalization scale from raw training labels so we can
+        # report MAE on the original (un-normalized) scale for fair benchmark comparison.
+        try:
+            raw_dir = osp.join(data_path, 'raw')
+            with open(osp.join(raw_dir, 'train.pickle'), 'rb') as _f:
+                _train_mols = _pkl.load(_f)
+            if subset:
+                with open(osp.join(raw_dir, 'train.index')) as _f:
+                    _train_idx = [int(x) for x in _f.read().strip().split(',')]
+            else:
+                _train_idx = list(range(len(_train_mols)))
+            _raw_ys = [float(_train_mols[i]['logP_SA_cycle_normalized']) for i in _train_idx]
+            params['y_min'] = min(_raw_ys)
+            params['y_max'] = max(_raw_ys)
+            params['y_unnorm_scale'] = params['y_max'] - params['y_min']
+        except Exception as _e:
+            print(f"Warning: could not compute unnorm scale ({_e}), MAE will be on normalized scale.")
+            params['y_unnorm_scale'] = 1.0
 
         return {'train': train_set, 'val': val_set, 'test': test_set, 'full': full_set}, None
 

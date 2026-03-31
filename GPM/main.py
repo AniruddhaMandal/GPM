@@ -158,8 +158,8 @@ def run(params):
 
                 is_stop = stopper(result)
                 logger.log(idx, epoch, loss, result)
-                print("Run {:d} | Epoch {:04d} | Loss {:.4f} | Train {:.4f} | Val {:.4f} | Test {:.4f}".format(
-                    idx, epoch, loss['train'], result['train'], result['val'], result['test']))
+                print("Run {:d} | Epoch {:04d} | Loss {:.4f} | Val {:.4f} | Test {:.4f}".format(
+                    idx, epoch, loss['train'], result['val'], result['test']))
                 if is_stop:
                     print("Early Stopping at Epoch:", epoch)
                     break
@@ -173,6 +173,7 @@ def run(params):
                     "training dynamics/test_value": result['test'],
                 })
             else:
+                print("Run {:d} | Epoch {:04d} | Loss {:.4f}".format(idx, epoch, loss['train']))
                 wandb.log({
                     "training dynamics/train_loss": loss['train'],
                     "training dynamics/val_loss": loss['val'],
